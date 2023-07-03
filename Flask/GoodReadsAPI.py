@@ -11,22 +11,23 @@ display.start()
 app = Flask(__name__)
 @app.route('/execute_selenium_code', methods=['POST'])
 def execute_selenium_code():
+    url = request.json.get('url')
+    
+    
+    # Set up the Selenium driver
+    chrome_options = Options()
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--disable-gpu')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    chrome_options.add_argument('--profile-directory=Default')
+    chrome_options.add_argument('--user-data-dir=~/.config/google-chrome')
+    driver = webdriver.Chrome(options=chrome_options)
+    driver.delete_all_cookies()
+    driver.maximize_window()
     try:
         # Get the email and password from the request's JSON payload
-        url = request.json.get('url')
-        
-        
-        # Set up the Selenium driver
-        chrome_options = Options()
-        chrome_options.add_argument('--no-sandbox')
-        chrome_options.add_argument('--headless')
-        chrome_options.add_argument('--disable-gpu')
-        chrome_options.add_argument('--disable-dev-shm-usage')
-        chrome_options.add_argument('--profile-directory=Default')
-        chrome_options.add_argument('--user-data-dir=~/.config/google-chrome')
-        driver = webdriver.Chrome(options=chrome_options)
-        driver.delete_all_cookies()
-        driver.maximize_window()
+
         action = ActionChains(driver)
         action = webdriver.ActionChains(driver)  # You may need to adjust the driver path based on your system configuration
         #print("here")
